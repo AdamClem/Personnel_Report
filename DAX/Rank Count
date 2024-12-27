@@ -1,0 +1,13 @@
+RankCountTable = 
+SUMMARIZE(
+    FILTER(
+        DIM_PMOS,
+        DIM_PMOS[Rank] IN {"Sgt", "SSgt", "GySgt", "MSgt", "WO", "CWO2", "CWO3", "Capt", "Maj"}
+    ),
+    DIM_PMOS[Rank],
+    "Count", COUNTROWS(FILTER(DIM_PMOS, DIM_PMOS[Rank] = EARLIER(DIM_PMOS[Rank]))),
+    "FY25_Total", CALCULATE(SUM(Summary_RankFY25[Total]), FILTER(Summary_RankFY25, Summary_RankFY25[Rank] = DIM_PMOS[Rank])),
+    "Difference", COUNTROWS(FILTER(DIM_PMOS, DIM_PMOS[Rank] = EARLIER(DIM_PMOS[Rank]))) - CALCULATE(SUM(Summary_RankFY25[Total]), FILTER(Summary_RankFY25, Summary_RankFY25[Rank] = DIM_PMOS[Rank])),
+    "Outbound", CALCULATE(COUNTROWS(FACT_PERSONNEL), FILTER(FACT_PERSONNEL, FACT_PERSONNEL[Rank] = DIM_PMOS[Rank] && NOT(ISBLANK(FACT_PERSONNEL[EDD])))
+    )
+)
