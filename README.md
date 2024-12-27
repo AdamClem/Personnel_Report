@@ -77,3 +77,6 @@ Overlay pages for helping users go use visualizations for their own individual e
         # Improvements - Develop parameters that allow a user to select which section they are in, and provide a specific view for thier section
 
 Information links to SharePoint online library that houses specificly sensitive personal data. This document library has protections in place and isolated to maintain compliance with government data loss prevention policies
+
+# Data Schema
+<img src="Personnel_Report/Data_Schema.png" alt="Snowflake schema for EOD personnel report" width="400" />
