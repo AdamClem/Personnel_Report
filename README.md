@@ -59,6 +59,7 @@ The report will help to denote those who need more attention with a more strenuo
 
         Query Work - Append DIM_CFT to DIM_PFT
         DAX - CFT and PFT by class
+*[Italicized Link Text]([https://github.com/your-repository](https://github.com/AdamClem/Personnel_Report/blob/main/DAX/Phhysical%20Fitness))*
 
 # Manpower
 Military members constantly flow in and out of units, with peak times occuring in the summertime
@@ -66,7 +67,7 @@ Communication to headquarters Marine Corps requires issuance of orders to person
 Additionally, the unit will begin to change over the next several years adding new occupational specialties witch changes in the overall number of personnel required
 
         DAX - RankCountTable
-        *[Italicized Link Text]([https://github.com/your-repository](https://github.com/AdamClem/Personnel_Report/blob/main/DAX/Rank%20Count))*
+*[Italicized Link Text]([https://github.com/your-repository](https://github.com/AdamClem/Personnel_Report/blob/main/DAX/Rank%20Count))*
 
 # Features
 Overlay pages for helping users go use visualizations for their own individual ends
