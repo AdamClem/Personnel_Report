@@ -1,0 +1,29 @@
+List of Mil Scol Code values = 
+VAR DISTINCT_VALUES_COUNT = DISTINCTCOUNT('DIM_SCHOOLS'[Mil Scol Code Descr])
+VAR MAX_VALUES_TO_SHOW = 0
+RETURN
+	IF(
+		DISTINCT_VALUES_COUNT > MAX_VALUES_TO_SHOW,
+		CONCATENATE(
+			CONCATENATEX(
+				TOPN(
+					MAX_VALUES_TO_SHOW,
+					VALUES('DIM_SCHOOLS'[Mil Scol Code]),
+					'DIM_SCHOOLS'[Mil Scol Code],
+					ASC
+				),
+				'DIM_SCHOOLS'[Mil Scol Code],
+				", ",
+				'DIM_SCHOOLS'[Mil Scol Code],
+				ASC
+			),
+			", etc."
+		),
+		CONCATENATEX(
+			VALUES('DIM_SCHOOLS'[Mil Scol Code]),
+			'DIM_SCHOOLS'[Mil Scol Code],
+			", ",
+			'DIM_SCHOOLS'[Mil Scol Code],
+			ASC
+		)
+	)
