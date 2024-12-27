@@ -1,0 +1,78 @@
+PME_Status = 
+SWITCH (
+    TRUE (),
+    COUNTROWS (
+        FILTER (
+            DIM_SCHOOLS,
+            (
+                DIM_SCHOOLS[Rank] = "LCPL" && DIM_SCHOOLS[Mil Scol Code] = "341" ) || // Good
+                (DIM_SCHOOLS[Rank] = "CPL" && DIM_SCHOOLS[Mil Scol Code] = "C21" ) || // Good
+                (DIM_SCHOOLS[Rank] = "SGT" && DIM_SCHOOLS[Mil Scol Code] = "T4M") || // Good
+                (DIM_SCHOOLS[Rank] = "SGT" && DIM_SCHOOLS[Mil Scol Code] = "315") || // Good
+                (DIM_SCHOOLS[Rank] = "SSGT" && DIM_SCHOOLS[Mil Scol Code] = "T8A") || // Good
+                (DIM_SCHOOLS[Rank] = "SSGT" && DIM_SCHOOLS[Mil Scol Code] = "T6C") || // Good
+                (DIM_SCHOOLS[Rank] = "GYSGT" && DIM_SCHOOLS[Mil Scol Code] = "314") || // Good
+                (DIM_SCHOOLS[Rank] = "GYSGT" && DIM_SCHOOLS[Mil Scol Code] = "T8H") || // Good
+                (DIM_SCHOOLS[Rank] = "MSGT" && DIM_SCHOOLS[Mil Scol Code] = "L9F") // Good
+        )
+    )= 1, "PME Complete",
+    COUNTROWS (
+        FILTER (
+            DIM_SCHOOLS,
+            (
+                DIM_SCHOOLS[Rank] = "CPL" && DIM_SCHOOLS[Mil Scol Code] = "L9Q" ) || // Good
+                (DIM_SCHOOLS[Rank] = "SGT" && DIM_SCHOOLS[Mil Scol Code] = "T3W") || // Good
+                (DIM_SCHOOLS[Rank] = "SSGT" && DIM_SCHOOLS[Mil Scol Code] = "T5P") || // Good
+                (DIM_SCHOOLS[Rank] = "GYSGT" && DIM_SCHOOLS[Mil Scol Code] = "T3X") // Good
+        )
+    ) = 1, "Non-Resident Complete",
+    "Incomplete"
+)
+// Resident PME is the start
+// Non-resident PME is next
+// Else "Incomplete"
+
+
+PME_Count_NonRes = 
+VAR NonResident = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "Non-Resident Complete"))
+VAR Complete = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "PME Complete"))
+RETURN
+IF(NonResident > 0, IF(NonResident - Complete < 0, 0, NonResident - Complete), 0)
+
+
+PME_Count_Incomplete = 
+VAR NonResident = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "Non-Resident Complete"))
+VAR Complete = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "PME Complete"))
+VAR Incomplete = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "Incomplete"))
+RETURN
+Incomplete - NonResident
+//((NonResident + Complete) - Incomplete)
+
+
+PME_Count_Complete = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "PME Complete"))
+
+
+Percent_PME_Complete = 
+VAR PME_Complete = CALCULATE(DISTINCTCOUNT(DIM_SCHOOLS[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "PME Complete"))
+VAR Total = DISTINCTCOUNT(FACT_PERSONNEL[EDIPI])
+RETURN
+IF(Total > 0, PME_Complete / Total, 0)
+
+
+Percent_NonRes_Complete = 
+VAR NonResident = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "Non-Resident Complete"))
+VAR Complete = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "PME Complete"))
+VAR NonResidentCount = IF(NonResident > 0, NonResident - Complete, 0)
+VAR Total = DISTINCTCOUNT(FACT_PERSONNEL[EDIPI])
+RETURN
+IF(NonResidentCount > 0, NonResidentCount / Total, 0)
+
+
+Percent_Incomplete = 
+VAR NonResident = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "Non-Resident Complete"))
+VAR Complete = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "PME Complete"))
+VAR Incomplete = CALCULATE(DISTINCTCOUNT(FACT_PERSONNEL[EDIPI]), FILTER(DIM_SCHOOLS, DIM_SCHOOLS[PME_Status] = "Incomplete"))
+VAR IncompleteCount = Incomplete - NonResident
+VAR Total = DISTINCTCOUNT(FACT_PERSONNEL[EDIPI])
+RETURN
+IF(IncompleteCount > 0, IncompleteCount / Total, 0)
