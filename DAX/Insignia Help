@@ -1,0 +1,45 @@
+// Basic insignia years
+Years_Basic = 
+VAR BasicEOD = "DOD JOINT EXPLOSIVE ORDNANCE DISPOSAL BASIC (COMN CORE)"
+VAR EODDates = 
+    FILTER(
+        DIM_SCHOOLS,
+        DIM_SCHOOLS[Mil Scol Code Descr] = BasicEOD)
+VAR EODFirstDate = MINX(EODDates, DIM_SCHOOLS[School Special Skill Compl Dt])
+RETURN
+    DATEDIFF(EODFirstDate, TODAY(), YEAR)
+
+// Senior insignia years
+Years_Senior = 
+VAR SeniorEOD = "SEO"
+VAR EODDates = 
+    FILTER(
+        DIM_INSIGNIA,
+        DIM_INSIGNIA[Insignia Auth Wear Code] = SeniorEOD)
+VAR EODFirstDate = MINX(EODDates, DIM_INSIGNIA[Insignia Auth Wear Eff Dt])
+VAR Years =
+    IF(
+        ISBLANK(EODFirstDate),
+        "Incomplete",
+        DATEDIFF(EODFirstDate, TODAY(), Year
+        )
+    )
+RETURN
+    Years
+
+// Master insignia yearsa
+Years_Master = 
+VAR MasterEOD = "MEO"
+VAR EODDates =
+    FILTER(
+        DIM_INSIGNIA,
+        DIM_INSIGNIA[Insignia Auth Wear Code] = MasterEOD)
+VAR EODFirstDate = MINX(EODDates, DIM_INSIGNIA[Insignia Auth Wear Eff Dt])
+VAR Years =
+    IF(
+        ISBLANK(EODFirstDate),
+        "Incomplete",
+        DATEDIFF(EODFirstDate, TODAY(), YEAR)
+    )
+RETURN
+    Years
