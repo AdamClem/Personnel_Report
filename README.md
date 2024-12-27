@@ -1,6 +1,10 @@
 # Personnel_Report
 This Power BI report offers a comprehensive overview of personnel qualifications, tracking certification statuses, skill levels, and training progress. Interactive visuals and filters enable quick identification of compliance rates, skill gaps, and training needs across the team, enhancing workforce management
 
+**[Bold Link Text]([https://github.com/your-repository](https://github.com/AdamClem/Personnel_Report/tree/main/DAX))**
+**[Bold Link Text]([https://github.com/your-repository](https://github.com/AdamClem/Personnel_Report/tree/main/Overlay_Pages))**
+
+
 # Welcome screen
 Provides interface for users to navigate through pages while embedded into a SharePoint online site via the Power BI service.
 
