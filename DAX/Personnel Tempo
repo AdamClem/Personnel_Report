@@ -1,0 +1,64 @@
+// Counts the total number of trips/deployments
+Count_Trips = 
+VAR Trips =
+CALCULATE(COUNTROWS(DIM_PERSTEMPO), DIM_PERSTEMPO[EDIPI])
+RETURN
+IF(Trips = 0, 0, Trips)
+
+// Deployed last year which helps to assess burn out
+DeployedLastYear = 
+VAR LastYear =
+CALCULATE(
+    SUM(DIM_PERSTEMPO[Days]),
+    DATESINPERIOD(
+        DIM_PERSTEMPO[Pers Tempo Track Act Rtrn Dt],
+        MAX(DIM_PERSTEMPO[Pers Tempo Track Act Rtrn Dt]),
+        -1,
+    YEAR
+    )
+)
+RETURN
+IF(LastYear = 0, "None", LastYear)
+
+// Counts the deployed time within the current insignia level
+Deployed_Time = 
+VAR StartDate =
+    MAXX(
+        FILTER(
+            DIM_INSIGNIA,
+            DIM_INSIGNIA[Insignia Auth Wear Code] = "BEO" || DIM_INSIGNIA[Insignia Auth Wear Code] = "SEO" || DIM_INSIGNIA[Insignia Auth Wear Code] = "MEO"
+        ),
+        DIM_INSIGNIA[Insignia Auth Wear Eff Dt]
+    )
+VAR EndDate = TODAY()
+VAR SelectedEDIPI = SELECTEDVALUE(FACT_PERSONNEL[EDIPI])
+VAR InsigniaType =
+    IF(
+        CONTAINS(DIM_INSIGNIA, DIM_INSIGNIA[Insignia Auth Wear Code], "MEO"),
+        "Master EOD Insignia",
+        BLANK()
+    )
+VAR DeployedPERSTEMPO =
+    IF(
+        ISBLANK(StartDate),
+        BLANK(),
+        SUMX(
+            FILTER(
+                DIM_PERSTEMPO,
+                DIM_PERSTEMPO[EDIPI] = SelectedEDIPI &&
+                DIM_PERSTEMPO[Pers Tempo Track Act Rtrn Dt] >= StartDate &&
+                DIM_PERSTEMPO[Pers Tempo Track Act Rtrn Dt] <= EndDate
+            ),
+            DIM_PERSTEMPO[Days]
+        )
+    )
+RETURN
+IF(
+    NOT ISBLANK(InsigniaType),
+    InsigniaType,
+    IF(
+        DeployedPERSTEMPO = BLANK(),
+        "No Insignia Authorized",
+        DeployedPERSTEMPO
+    )
+)
