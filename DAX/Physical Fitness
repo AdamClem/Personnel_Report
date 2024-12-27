@@ -1,0 +1,80 @@
+// PFT Classes
+PFT_1st = 
+VAR PFTFirstClass =
+CALCULATE(
+    COUNTROWS(DIM_PFT), DIM_PFT[Pft Class] = 1)
+RETURN
+IF(PFTFirstClass = 0, 0, PFTFirstClass)
+
+PFT_2nd = 
+VAR PFTSecondClass =
+CALCULATE(
+    COUNTROWS(DIM_PFT), DIM_PFT[Pft Class] = 2)
+RETURN
+IF(PFTSecondClass = 0, 0, PFTSecondClass)
+
+PFT_3rd = 
+VAR PFTThirdClass =
+CALCULATE(
+    COUNTROWS(DIM_PFT), DIM_PFT[Pft Class] = 3)
+RETURN
+IF(PFTThirdClass = 0, 0, PFTThirdClass)
+
+PFT_Fail = 
+VAR PFTFail =
+CALCULATE(
+    COUNTROWS(DIM_PFT), 
+    DIM_PFT[Pft Score] < 149 && DIM_PFT[Pft Class] <> 8,
+    DIM_PFT[Pft Class] <> 5
+    )
+RETURN
+IF(PFTFail = 0, 0, PFTFail)
+
+PFT_Untrained = 
+VAR PFTUntrained =
+CALCULATE(
+    COUNTBLANK(DIM_PFT[Pft Score])
+)
+RETURN
+IF(PFTUntrained = 0, 0, PFTUntrained)
+
+// CFT Classes
+CFT_1st = 
+VAR CFTFirstClass =
+CALCULATE(
+    COUNTROWS(DIM_PFT),
+    DIM_PFT[Cbt Fitness Test Class Cd] = 1)
+RETURN
+IF(CFTFirstClass = 0, 0, CFTFirstClass)
+
+CFT_2nd = 
+VAR SecondClass =
+CALCULATE(
+    COUNTROWS(DIM_PFT),
+    DIM_PFT[Cbt Fitness Test Class Cd] = 2)
+RETURN
+IF(SecondClass = 0, 0, SecondClass)
+
+CFT_3rd = 
+VAR ThirdClass =
+CALCULATE(
+    COUNTROWS(DIM_PFT),
+    DIM_PFT[Cbt Fitness Test Class Cd] = 3)
+RETURN
+IF(ThirdClass = 0, 0, ThirdClass)
+
+CFT_Fail = 
+VAR CFTFail =
+CALCULATE(
+    COUNTROWS(DIM_PFT), DIM_PFT[Cbt Fitness Score Qy] < 149 && DIM_PFT[Cbt Fitness Test Class Cd] <> 8,
+    DIM_PFT[Cbt Fitness Score Qy] <> BLANK())
+RETURN
+IF(CFTFail = 0, 0, CFTFail)
+
+CFT_Untrained = 
+VAR CFTUntrained =
+CALCULATE(
+    COUNTBLANK(DIM_PFT[Cbt Fitness Score Qy])
+)
+RETURN
+IF(CFTUntrained = 0, 0, CFTUntrained)
