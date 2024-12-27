@@ -1,0 +1,32 @@
+CCA_Due = 
+SUMMARIZE(
+    FACT_PERSONNEL,
+    FACT_PERSONNEL[EDIPI],
+    FACT_PERSONNEL[Rank],
+    FACT_PERSONNEL[Name],
+    "Last CCA", CALCULATE(MAX(DIM_MISC_PAY[Misc Credit Pay To Date]))
+)
+
+// Displays members that had a payment that is greater than 3 years (1095 days) ago
+Due_CCA = 
+IF(
+    DATEDIFF('CCA_Due'[Last CCA], TODAY(), DAY) > 1095,
+    TRUE(),
+    FALSE()
+)
+
+// Determines if a member has not received an initial payment
+New_Join_CCA = 
+IF(
+    ISBLANK('CCA_Due'[Last CCA]),
+    TRUE(),
+    FALSE()
+)
+
+// Final determinination of elgibility between new joins and 3+ years
+Elgibility = 
+IF(
+    CCA_Due[Due_CCA] = TRUE() || CCA_Due[New_Join_CCA] = TRUE(),
+    "Eligible", 
+    "Ineligible"
+)
