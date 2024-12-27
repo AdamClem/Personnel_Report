@@ -79,4 +79,4 @@ Overlay pages for helping users go use visualizations for their own individual e
 Information links to SharePoint online library that houses specificly sensitive personal data. This document library has protections in place and isolated to maintain compliance with government data loss prevention policies
 
 # Data Schema
-<img src="https://github.com/AdamClem/Personnel_Report/blob/main/Data_Schema.png" alt="Snowflake schema for EOD personnel report" width="400" />
+<img src="https://github.com/AdamClem/Personnel_Report/blob/main/Data_Schema.png" alt="Snowflake schema for EOD personnel report" width="1000" />
