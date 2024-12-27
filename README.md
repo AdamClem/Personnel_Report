@@ -66,12 +66,10 @@ Communication to headquarters Marine Corps requires issuance of orders to person
 Additionally, the unit will begin to change over the next several years adding new occupational specialties witch changes in the overall number of personnel required
 
         DAX - RankCountTable
+        *[Italicized Link Text]([https://github.com/your-repository](https://github.com/AdamClem/Personnel_Report/blob/main/DAX/Rank%20Count))*
 
 # Features
 Overlay pages for helping users go use visualizations for their own individual ends
         # Improvements - Develop parameters that allow a user to select which section they are in, and provide a specific view for thier section
 
 Information links to SharePoint online library that houses specificly sensitive personal data. This document library has protections in place and isolated to maintain compliance with government data loss prevention policies
-
-
-# Data Schema
